@@ -1,24 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
-
+import React, { useEffect, useState } from "react";
+import Navbar from "./components/Navbar";
+import getMatches from "./Api.js";
+import MyCard from "./components/MyCard";
+import "./App.css";
 function App() {
+  const [matches, setMatches] = useState([]);
+  useEffect(() => {
+    getMatches()
+      .then((data) => setMatches(data.data.matches))
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Navbar />
+      {matches.map((match) => (
+        <MyCard key={match.unique_id} match={match} />
+      ))}
+    </>
   );
 }
 
