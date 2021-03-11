@@ -22,7 +22,7 @@ export default function ButtonAppBar() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" color="primary">
+      <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
             Live Cricket Score

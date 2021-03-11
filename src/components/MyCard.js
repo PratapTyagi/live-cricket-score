@@ -6,7 +6,7 @@ import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { Grid } from "@material-ui/core";
-import { cricketScore } from "../Api.js";
+import { showDetails } from "../Api";
 
 const useStyles = makeStyles({
   root: {
@@ -17,18 +17,20 @@ const useStyles = makeStyles({
 
 const MyCard = ({ match }) => {
   const classes = useStyles();
-  let date = new Date(match.dateTimeGMT).toLocaleString();
+  const date = new Date(match.dateTimeGMT).toLocaleString();
 
-  const showDetail = (id) => {
-    cricketScore(id)
-      .then((data) => console.log(data.data))
+  const details = (id) => {
+    showDetails(id)
+      .then((data) => {
+        console.log(data);
+      })
       .catch((err) => console.log(err));
   };
 
   return (
     <Card className={classes.root}>
       <CardContent>
-        <Grid container justify="center" alignItems="center">
+        <Grid container justify="center" alignItems="center" spacing={2}>
           <Grid item>
             <Typography item>{match["team-1"]}</Typography>
           </Grid>
@@ -49,7 +51,7 @@ const MyCard = ({ match }) => {
       <CardActions>
         <Grid container justify="center">
           <Button
-            onClick={() => showDetail(match.unique_id)}
+            onClick={() => details(match.unique_id)}
             size="small"
             variant="contained"
             color="primary"

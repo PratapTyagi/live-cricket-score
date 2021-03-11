@@ -9,7 +9,7 @@ export const getMatches = async () => {
   return await axios.get(url).catch((err) => console.log(err));
 };
 
-export const cricketScore = async (id) => {
+export const showDetails = async (id) => {
   const url = `https://cricapi.com/api/cricketScore?apikey=${API_KEY}&unique_id=${id}`;
 
   return await axios.get(url).catch((err) => console.log(err));
