@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
-import getMatches from "./Api.js";
+import { getMatches } from "./Api.js";
 import MyCard from "./components/MyCard";
 import "./App.css";
 function App() {
@@ -15,7 +15,13 @@ function App() {
     <>
       <Navbar />
       {matches.map((match) => (
-        <MyCard key={match.unique_id} match={match} />
+        <>
+          {match.type === "Twenty20" ? (
+            <MyCard key={match.unique_id} match={match} />
+          ) : (
+            ""
+          )}
+        </>
       ))}
     </>
   );

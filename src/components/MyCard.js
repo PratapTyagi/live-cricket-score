@@ -6,6 +6,7 @@ import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { Grid } from "@material-ui/core";
+import { cricketScore } from "../Api.js";
 
 const useStyles = makeStyles({
   root: {
@@ -16,7 +17,14 @@ const useStyles = makeStyles({
 
 const MyCard = ({ match }) => {
   const classes = useStyles();
-  // const date = new Date(match.dateTimeGMT);
+  let date = new Date(match.dateTimeGMT).toLocaleString();
+
+  const showDetail = (id) => {
+    cricketScore(id)
+      .then((data) => console.log(data.data))
+      .catch((err) => console.log(err));
+  };
+
   return (
     <Card className={classes.root}>
       <CardContent>
@@ -40,7 +48,13 @@ const MyCard = ({ match }) => {
       </CardContent>
       <CardActions>
         <Grid container justify="center">
-          <Button size="small" variant="contained" color="primary" item>
+          <Button
+            onClick={() => showDetail(match.unique_id)}
+            size="small"
+            variant="contained"
+            color="primary"
+            item
+          >
             Show Details
           </Button>
           <Button
@@ -50,7 +64,7 @@ const MyCard = ({ match }) => {
             style={{ marginLeft: 10 }}
             item
           >
-            S{/* Starting At: {date} */}
+            Starting At: {date}
           </Button>
         </Grid>
       </CardActions>
