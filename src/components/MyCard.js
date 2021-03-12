@@ -7,6 +7,12 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { Grid } from "@material-ui/core";
 import { showDetails } from "../Api";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import { Fragment } from "react";
 
 const useStyles = makeStyles({
   root: {
@@ -19,15 +25,7 @@ const MyCard = ({ match }) => {
   const classes = useStyles();
   const date = new Date(match.dateTimeGMT).toLocaleString();
 
-  const details = (id) => {
-    showDetails(id)
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  return (
+  const cardComponent = () => (
     <Card className={classes.root}>
       <CardContent>
         <Grid container justify="center" alignItems="center" spacing={2}>
@@ -51,7 +49,9 @@ const MyCard = ({ match }) => {
       <CardActions>
         <Grid container justify="center">
           <Button
-            onClick={() => details(match.unique_id)}
+            onClick={() => {
+              details(match.unique_id);
+            }}
             size="small"
             variant="contained"
             color="primary"
@@ -71,6 +71,65 @@ const MyCard = ({ match }) => {
         </Grid>
       </CardActions>
     </Card>
+  );
+
+  const [open, setOpen] = React.useState(false);
+  const [detail, setDetail] = React.useState({});
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const details = (id) => {
+    showDetails(id)
+      .then((data) => {
+        setDetail(data.data);
+        handleClickOpen();
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const dialogComponent = () => (
+    <Dialog open={open} onClose={handleClose}>
+      <DialogTitle id="alert-dialog-title">{"Match details"}</DialogTitle>
+      <DialogContent>
+        <DialogContentText id="alert-dialog-description">
+          <Typography>{detail.stat}</Typography>
+          <Typography>
+            Match{" "}
+            <span style={{ fontStyle: "italic", fontWeight: "bold" }}>
+              {detail.matchStarted === true
+                ? " has started."
+                : " has not started yet."}
+            </span>
+          </Typography>
+          <Typography>
+            Score{" "}
+            <span style={{ fontStyle: "italic", fontWeight: "bold" }}>
+              {detail.score}
+            </span>
+          </Typography>
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose} color="primary">
+          CLOSE
+        </Button>
+        <Button onClick={handleClose} color="primary" autoFocus>
+          OK
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+
+  return (
+    <Fragment>
+      {cardComponent()} {dialogComponent()}
+    </Fragment>
   );
 };
 
