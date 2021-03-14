@@ -1,7 +1,9 @@
-# LINK
+# LIVE CRICKET SCORE
+
+### `LINK`
 [LiveCricketScore](https://live-cricket-score.netlify.app/)
 
-## DESCIPTION
+### `DESCIPTION`
 
 This is real time cricket score using crick API.
 
